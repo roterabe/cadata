@@ -1,8 +1,9 @@
 <?php
 
-require '../Schema/Modifiers.php';
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/Modifiers.php');
+require_once(dirname(__FILE__) . '/controllerFunctions.php');
 
-class Accesible extends Controller
+class Accessible extends Controller
 {
     /**
      * "/user/list" Endpoint - Get list of users
@@ -10,17 +11,22 @@ class Accesible extends Controller
     public function listData()
     {
         $strErrorDesc = '';
+        $strErrorHeader = '';
         $requestMethod = $_SERVER['REQUEST_METHOD'];
-        $getQueryAsStringArr = $this->getQueryAsString();
+        $responseData = '';
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
-                $modifiers = new Modifiers('../Schema/cars.sql');
+                $modifiers = new Modifiers($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
 
-                $cars = $modifiers->listAll();
-                $responseData = json_encode($cars);
+                $SQLiteObj = $modifiers->listAll();
+                $data = array();
+                while ($row = $SQLiteObj->fetchArray(SQLITE3_ASSOC)) {
+                    $data[] = $row;
+                }
+                $responseData = json_encode($data);
             } catch (Error $e) {
-                $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
+                $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {
@@ -30,12 +36,12 @@ class Accesible extends Controller
 
         // send output
         if (!$strErrorDesc) {
-            $this->sendOutput(
+            $this->sendData(
                 $responseData,
                 array('Content-Type: application/json', 'HTTP/1.1 200 OK')
             );
         } else {
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)),
+            $this->sendData(json_encode(array('error' => $strErrorDesc)),
                 array('Content-Type: application/json', $strErrorHeader)
             );
         }

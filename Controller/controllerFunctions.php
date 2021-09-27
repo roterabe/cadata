@@ -5,18 +5,13 @@ class Controller
     public function __call($name, $arguments)
     {
         // TODO: Implement __call() method.
-        $this->sendOutput('', array('HTTP/1.1 404 Not Found'));
+        $this->sendData('', array('HTTP/1.1 404 Not Found'));
     }
 
     protected function parseURI()
     {
         $uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
         return $uriSegments;
-    }
-
-    protected function getQueryAsString()
-    {
-        return parse_str($_SERVER['QUERY_STRING'], $queryArr);
     }
 
     protected function sendData($data, $headers=array())
@@ -30,6 +25,7 @@ class Controller
                     header($httpHeader);
                 }
         }
+        echo $data;
         exit;
     }
 }
