@@ -1,5 +1,5 @@
 # .idea config directory
-./.idea
+.idea
 
 # luarocks build files
 *.src.rock
