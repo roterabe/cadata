@@ -1,9 +1,6 @@
 <?php
 
-interface DB_Connect
-{
-    function connect($dir);
-}
+require_once dirname(__FILE__).'/DB_Connect.php';
 
 class Database extends SQLite3 implements DB_Connect
 {
