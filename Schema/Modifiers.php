@@ -24,4 +24,12 @@ EOF;
         $statement->bindValue(4, $cinsurance, SQLITE3_INTEGER);
         return $statement->execute();
     }
+
+    function updateEntry()
+    {
+        $sql = <<<EOF
+
+EOF;
+
+    }
 }

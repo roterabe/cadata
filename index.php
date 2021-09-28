@@ -9,11 +9,11 @@ if ($uriSegments[3] !== null && $uriSegments[3] !== 'cars' || $uriSegments[4] ==
     header('HTTP/1.1 404 Not Found');
     exit();
 } else if ($uriSegments[3] !== null && $uriSegments[3] == 'cars' && $uriSegments[4] === 'create') {
-    $action = new Accessible();
+    $action = new accessibleFunctions();
     $queryType = $uriSegments[4] . 'Data';
     $action->{$queryType}();
 } else {
-    $action = new Accessible();
+    $action = new accessibleFunctions();
     $queryType = $uriSegments[4] . 'Data';
     $action->{$queryType}();
 }

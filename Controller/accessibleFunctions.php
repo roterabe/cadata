@@ -3,7 +3,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/Modifiers.php');
 require_once(dirname(__FILE__) . '/controllerFunctions.php');
 
-class Accessible extends Controller
+class accessibleFunctions extends controllerFunctions
 {
     /**
      * "/user/list" Endpoint - Get list of users

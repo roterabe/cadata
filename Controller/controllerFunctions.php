@@ -1,6 +1,6 @@
 <?php
 
-class Controller
+class controllerFunctions
 {
     public function __call($name, $arguments)
     {
