@@ -6,8 +6,9 @@ class Modifiers extends Database
 {
     function listAll()
     {
+        //TODO Make proper query to list all data.
         $sql = <<<EOF
-        SELECT * from cars;
+        SELECT man_name FROM car INNER JOIN ;
 EOF;
         return $this->query($sql);
     }
