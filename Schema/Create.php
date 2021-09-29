@@ -14,17 +14,17 @@ class CreateDatabase extends SQLite3
         $query = <<<EOF
         CREATE TABLE IF NOT EXISTS manufacturer (
 	man_id INTEGER NOT NULL PRIMARY KEY,
-	man_name VARCHAR(255) NOT NULL
+	man_name VARCHAR(255) UNIQUE NOT NULL
 );
         CREATE TABLE IF NOT EXISTS model (
     m_id INTEGER NOT NULL PRIMARY KEY,
     man_id INTEGER NOT NULL,
-    m_name VARCHAR(255) NOT NULL,
+    m_name VARCHAR(255) UNIQUE NOT NULL,
     CONSTRAINT man_fk FOREIGN KEY (man_id) REFERENCES manufacturer(man_id)     
 );
         CREATE TABLE IF NOT EXISTS model_year (
     y_id INTEGER NOT NULL PRIMARY KEY,
-    year INTEGER NOT NULL         
+    year INTEGER UNIQUE NOT NULL         
 );
         CREATE TABLE IF NOT EXISTS engine (
     engine_name VARCHAR(255) NOT NULL PRIMARY KEY,
