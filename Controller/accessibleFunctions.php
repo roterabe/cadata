@@ -25,8 +25,8 @@ class accessibleFunctions extends controllerFunctions
                     $data[] = $row;
                 }
                 $responseData = json_encode($data);
-            } catch (Error $e) {
-                $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';
+            } catch (Error $err) {
+                $strErrorDesc = $err->getMessage() . 'Oops, are you sure you\'re making a proper request?';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {
@@ -47,9 +47,6 @@ class accessibleFunctions extends controllerFunctions
         }
     }
 
-    /**
-     * @throws Exception
-     */
     public function createData()
     {
         $strErrorDesc = '';
@@ -60,15 +57,16 @@ class accessibleFunctions extends controllerFunctions
         if (strtoupper($requestMethod) == 'POST') {
             try {
                 $modifiers = new Modifiers($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
-                if (count($_POST) !== 4) {
+                if (count($_POST) !== 8) {
                     throw new Exception('POST expected 4 fields of data');
                 }
                 if (isset($_POST)) {
-                    $SQLiteObj = $modifiers->createEntry($_POST['cname'], $_POST['cmodel'], $_POST['cyear'], $_POST['cinsurance']);
+                    $SQLiteObj = $modifiers->createEntry($_POST['cName'], $_POST['cModel'], $_POST['cYear'], $_POST['cEngine'], $_POST['cFuel'], $_POST['isHybrid'], $_POST['isAWD'], $_POST['isAutomatic']);
+                    print_r($_POST);
                 }
             } catch
-            (Error $e) {
-                $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';
+            (Error $err) {
+                $strErrorDesc = $err->getMessage() . 'I don\'t know what you did, but it was deadly.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {

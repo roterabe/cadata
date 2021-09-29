@@ -11,6 +11,7 @@ class CreateDatabase extends SQLite3
 
     function create()
     {
+        //TODO add UNIQUE constraints
         $query = <<<EOF
         CREATE TABLE IF NOT EXISTS manufacturer (
 	man_id INTEGER NOT NULL PRIMARY KEY,
@@ -27,8 +28,9 @@ class CreateDatabase extends SQLite3
     year INTEGER UNIQUE NOT NULL         
 );
         CREATE TABLE IF NOT EXISTS engine (
-    engine_name VARCHAR(255) NOT NULL PRIMARY KEY,
-    fuel VARCHAR(255) NOT NULL          
+    engine_name VARCHAR(255) NOT NULL,
+    fuel VARCHAR(255) NOT NULL,
+    PRIMARY KEY (engine_name, fuel)         
 );
         CREATE TABLE IF NOT EXISTS extras (
     e_id INTEGER NOT NULL PRIMARY KEY,
@@ -36,7 +38,8 @@ class CreateDatabase extends SQLite3
     hybrid INTEGER NOT NULL,
     awd INTEGER NOT NULL,
     automatic INTEGER NOT NULL,
-    CONSTRAINT engine_fk FOREIGN KEY (engine_name) REFERENCES engine(engine_name)    
+    CONSTRAINT engine_fk FOREIGN KEY (engine_name) REFERENCES engine(engine_name),
+    UNIQUE (engine_name, hybrid, awd, automatic)  
 );
         CREATE TABLE IF NOT EXISTS car (
     c_id INTEGER NOT NULL PRIMARY KEY,
@@ -46,7 +49,8 @@ class CreateDatabase extends SQLite3
     is_deleted INTEGER NOT NULL, 
     CONSTRAINT m_fk FOREIGN KEY (m_id) REFERENCES model(m_id),
     CONSTRAINT y_fk FOREIGN KEY (y_id) REFERENCES model_year(y_id),
-    CONSTRAINT e_fk FOREIGN KEY (e_id) REFERENCES extras(e_id)   
+    CONSTRAINT e_fk FOREIGN KEY (e_id) REFERENCES extras(e_id),
+    UNIQUE (m_id, y_id, e_id)   
 );
     
 EOF;
