@@ -3,17 +3,39 @@
 require_once(dirname(__FILE__) . '/Controller/accessibleFunctions.php');
 require_once(dirname(__FILE__) . '/Schema/Modifiers.php');
 
-$uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+class acceptRequest
+{
+    private $uriSegments = '';
 
-if ($uriSegments[3] !== null && $uriSegments[3] !== 'cars' || $uriSegments[4] === null) {
+    public function __construct($url)
+    {
+        $this->uriSegments = explode('/', parse_url($url, PHP_URL_PATH));
+    }
+
+    public function getUri($pos)
+    {
+        return $this->uriSegments[$pos];
+    }
+
+}
+
+;
+
+$uri = new acceptRequest;
+
+if ($uri->getUri(3) !== null && $uri->getUri(3) !== 'cars' || $uri->getUri(4) === null) {
     header('HTTP/1.1 404 Not Found');
     exit();
-} else if ($uriSegments[3] !== null && $uriSegments[3] == 'cars' && $uriSegments[4] === 'create') {
+} else if ($uri->getUri(3) !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'create') {
     $action = new accessibleFunctions();
-    $queryType = $uriSegments[4] . 'Data';
+    $queryType = $uri->getUri(4) . 'Data';
+    $action->{$queryType}();
+} else if ($uri->getUri(3 !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'update')){
+    $action = new accessibleFunctions();
+    $queryType = $uri->getUri(4). 'Data';
     $action->{$queryType}();
 } else {
     $action = new accessibleFunctions();
-    $queryType = $uriSegments[4] . 'Data';
+    $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
 }
