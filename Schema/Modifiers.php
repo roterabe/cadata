@@ -5,11 +5,11 @@ require_once dirname(__FILE__) . '/Functionality.php';
 
 class Modifiers extends Database implements Functionality
 {
-    function listAll()
+    public function listAll()
     {
         //TODO Make proper query to list all data.
         $sql = <<<EOF
-        SELECT manufacturer.man_name as 'Manufacturer', model.m_name as 'Model', model_year.year as 'Year', extras.engine_name as 'Engine', extras.hybrid as 'Hybrid', extras.awd as '4x4', extras.automatic as 'Automatic' FROM car 
+        SELECT manufacturer.man_name as 'Manufacturer', model.m_name as 'Model', model_year.year as 'Year', extras.engine_name as 'Engine', extras.hybrid as 'Hybrid', extras.awd as '4x4', extras.automatic as 'Automatic', car.is_deleted FROM car 
         INNER JOIN model ON car.m_id = model.m_id 
         INNER JOIN manufacturer ON manufacturer.man_id = model.man_id 
         INNER JOIN model_year ON model_year.y_id = car.y_id 
@@ -18,7 +18,7 @@ EOF;
         return $this->query($sql);
     }
 
-    function createEntry($cName, $cModel, $cYear, $cEngine, $cFuel, $isHybrid, $isAWD, $isAutomatic)
+    public function createEntry($cName, $cModel, $cYear, $cEngine, $cFuel, $isHybrid, $isAWD, $isAutomatic)
     {
         echo 'called';
         //TODO make proper queries to insert data.
@@ -73,7 +73,6 @@ EOF;
         $statement->bindParam(':m_name', $cModel, SQLITE3_TEXT);
         $statement->bindParam(':cYear', $cYear, SQLITE3_INTEGER);
         $statement->bindParam(':engine_name', $cEngine, SQLITE3_TEXT);
-        $statement->bindParam(':fuel', $cFuel, SQLITE3_TEXT);
         $statement->bindParam(':isHybrid', $isHybrid, SQLITE3_INTEGER);
         $statement->bindParam(':isAWD', $isAWD, SQLITE3_INTEGER);
         $statement->bindParam(':isAutomatic', $isAutomatic, SQLITE3_INTEGER);
@@ -82,11 +81,29 @@ EOF;
 
     }
 
-    function updateEntry()
+    public function updateEntry()
     {
         $sql = <<<EOF
 
 EOF;
+
+    }
+
+    public function deleteEntry($cModel, $cYear, $cEngine, $isHybrid, $isAWD, $isAutomatic)
+    {
+        $sql = <<<EOF
+        UPDATE car SET is_deleted = 1 WHERE m_id = (SELECT m_id FROM model WHERE m_name = :m_name) AND y_id = (SELECT y_id FROM model_year WHERE year = :cYear)
+        AND e_id = (SELECT e_id FROM extras WHERE engine_name = :engine_name AND hybrid = :isHybrid AND awd = :isAWD AND automatic = :isAutomatic);
+EOF;
+        $statement = $this->prepare($sql);
+        $statement->bindParam(':m_name', $cModel, SQLITE3_TEXT);
+        $statement->bindParam(':cYear', $cYear, SQLITE3_INTEGER);
+        $statement->bindParam(':engine_name', $cEngine, SQLITE3_TEXT);
+        $statement->bindParam(':isHybrid', $isHybrid, SQLITE3_INTEGER);
+        $statement->bindParam(':isAWD', $isAWD, SQLITE3_INTEGER);
+        $statement->bindParam(':isAutomatic', $isAutomatic, SQLITE3_INTEGER);
+        $res = $statement->execute();
+        $res->finalize();
 
     }
 }

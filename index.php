@@ -21,7 +21,7 @@ class acceptRequest
 
 ;
 
-$uri = new acceptRequest;
+$uri = new acceptRequest($_SERVER['REQUEST_URI']);
 
 if ($uri->getUri(3) !== null && $uri->getUri(3) !== 'cars' || $uri->getUri(4) === null) {
     header('HTTP/1.1 404 Not Found');
@@ -30,9 +30,13 @@ if ($uri->getUri(3) !== null && $uri->getUri(3) !== 'cars' || $uri->getUri(4) ==
     $action = new accessibleFunctions();
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
-} else if ($uri->getUri(3 !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'update')){
+} else if ($uri->getUri(3 !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'update')) {
     $action = new accessibleFunctions();
-    $queryType = $uri->getUri(4). 'Data';
+    $queryType = $uri->getUri(4) . 'Data';
+    $action->{$queryType}();
+} else if ($uri->getUri(3) !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'delete') {
+    $action = new accessibleFunctions();
+    $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
 } else {
     $action = new accessibleFunctions();
