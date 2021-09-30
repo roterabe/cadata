@@ -61,7 +61,7 @@ class accessibleFunctions extends controllerFunctions
                     throw new Exception('POST expected 4 fields of data');
                 }
                 if (isset($_POST)) {
-                    $SQLiteObj = $modifiers->createEntry($_POST['cName'], $_POST['cModel'], $_POST['cYear'], $_POST['cEngine'], $_POST['cFuel'], $_POST['isHybrid'], $_POST['isAWD'], $_POST['isAutomatic']);
+                    $modifiers->createEntry($_POST['cName'], $_POST['cModel'], $_POST['cYear'], $_POST['cEngine'], $_POST['cFuel'], $_POST['isHybrid'], $_POST['isAWD'], $_POST['isAutomatic']);
                     print_r($_POST);
                 }
             } catch
