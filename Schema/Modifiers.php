@@ -1,8 +1,9 @@
 <?php
 
 require_once dirname(__FILE__) . '/Database.php';
+require_once dirname(__FILE__) . '/Functionality.php';
 
-class Modifiers extends Database
+class Modifiers extends Database implements Functionality
 {
     function listAll()
     {
