@@ -2,6 +2,13 @@
 
 class controllerFunctions
 {
+    protected $dbEngine = '';
+
+    function __construct($dbEngine)
+    {
+        $this->dbEngine = $dbEngine;
+    }
+
     public function __call($name, $arguments)
     {
         // TODO: Implement __call() method.

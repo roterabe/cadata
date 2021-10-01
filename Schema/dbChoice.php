@@ -16,21 +16,21 @@ class dbChoice
 
     public function listAll()
     {
-        $this->obj->listAll();
+        return $this->obj->listAll();
     }
 
     public function createEntry($cName, $cModel, $cYear, $cEngine, $cFuel, $isHybrid, $isAWD, $isAutomatic)
     {
-        $this->obj->createEntry($cName, $cModel, $cYear, $cEngine, $cFuel, $isHybrid, $isAWD, $isAutomatic);
+        return $this->obj->createEntry($cName, $cModel, $cYear, $cEngine, $cFuel, $isHybrid, $isAWD, $isAutomatic);
     }
 
     public function updateEntry()
     {
-        $this->obj->updateEntry();
+        return $this->obj->updateEntry();
     }
 
     public function deleteEntry($cModel, $cYear, $cEngine, $isHybrid, $isAWD, $isAutomatic)
     {
-        $this->obj->deleteEntry($cModel, $cYear, $cEngine, $isHybrid, $isAWD, $isAutomatic);
+        return $this->obj->deleteEntry($cModel, $cYear, $cEngine, $isHybrid, $isAWD, $isAutomatic);
     }
 }

@@ -5,16 +5,18 @@ require_once(dirname(__FILE__) . '/controllerFunctions.php');
 
 class accessibleFunctions extends controllerFunctions
 {
-    private function PUT($key){
+    private function PUT($key)
+    {
         $inputFileSrc = 'php://input';
         $lines = file($inputFileSrc);
 
-        foreach($lines as $i => $line){
-            $search = 'Content-Disposition: form-data; name="'.$key.'"';
-            if(strpos($line, $search) !== false){
-                return trim($lines[$i+2]);
+        foreach ($lines as $i => $line) {
+            $search = 'Content-Disposition: form-data; name="' . $key . '"';
+            if (strpos($line, $search) !== false) {
+                return trim($lines[$i + 2]);
             }
         }
+        return -1;
     }
 
     public function listData()
@@ -26,9 +28,9 @@ class accessibleFunctions extends controllerFunctions
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
-                $modifiers = new Modifiers($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
+                $db = new dbChoice($this->dbEngine, $_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
 
-                $SQLiteObj = $modifiers->listAll();
+                $SQLiteObj = $db->listAll();
                 $data = array();
                 while ($row = $SQLiteObj->fetchArray(SQLITE3_ASSOC)) {
                     $data[] = $row;
@@ -65,7 +67,7 @@ class accessibleFunctions extends controllerFunctions
 
         if (strtoupper($requestMethod) == 'POST') {
             try {
-                $db = new dbChoice($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
+                $db = new dbChoice($this->dbEngine, $_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
                 if (count($_POST) !== 8) {
                     throw new Exception('POST expected 8 fields of data');
                 }
@@ -101,8 +103,8 @@ class accessibleFunctions extends controllerFunctions
 
         if (strtoupper($requestMethod) == 'PUT') {
             try {
-                parse_str(file_get_contents("php://input"),$post_vars);
-                $db = new dbChoice($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
+                parse_str(file_get_contents("php://input"), $post_vars);
+                $db = new dbChoice($this->dbEngine, $_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
                 if (count($post_vars) !== 8) {
                     throw new Exception('POST expected 8 fields of data');
                 }
@@ -141,16 +143,15 @@ class accessibleFunctions extends controllerFunctions
             try {
                 $counter = 0;
                 $lines = file('php://input');
-                $db = new dbChoice('SQLite',$_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
-                foreach($lines as $i => $line){
+                $db = new dbChoice($this->dbEngine, $_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
+                foreach ($lines as $i => $line) {
                     $search = 'Content-Disposition: form-data;';
-                    if(strpos($line, $search) !== false){
+                    if (strpos($line, $search) !== false) {
                         $counter++;
                     }
                     //throw new Exception('Request expected 6 fields of data');
                 }
-                if ($counter !== 6)
-                {
+                if ($counter !== 6) {
                     throw new Exception('Request expected 6 fields of data');
                 }
                 if (isset($lines)) {

@@ -27,19 +27,19 @@ if ($uri->getUri(3) !== null && $uri->getUri(3) !== 'cars' || $uri->getUri(4) ==
     header('HTTP/1.1 404 Not Found');
     exit();
 } else if ($uri->getUri(3) !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'create') {
-    $action = new accessibleFunctions();
+    $action = new accessibleFunctions('SQLite');
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
 } else if ($uri->getUri(3 !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'update')) {
-    $action = new accessibleFunctions();
+    $action = new accessibleFunctions('SQLite');
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
 } else if ($uri->getUri(3) !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'delete') {
-    $action = new accessibleFunctions();
+    $action = new accessibleFunctions('SQLite');
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
 } else {
-    $action = new accessibleFunctions();
+    $action = new accessibleFunctions('SQLite');
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
 }
