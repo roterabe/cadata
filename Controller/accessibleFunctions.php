@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/Modifiers.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/dbChoice.php');
 require_once(dirname(__FILE__) . '/controllerFunctions.php');
 
 class accessibleFunctions extends controllerFunctions

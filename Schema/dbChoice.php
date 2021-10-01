@@ -1,6 +1,6 @@
 <?php
 
-require_once require_once dirname(__FILE__) . '/Modifiers.php';
+require_once dirname(__FILE__) . '/Modifiers.php';
 
 class dbChoice
 {
