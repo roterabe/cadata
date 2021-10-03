@@ -15,6 +15,7 @@ The way you make API calls is via **GET**, **POST** and **PUT** requests. Or in 
 `localhost/path-to-folder/index.php/cars/list` to list all car data available in the database.
 
 `localhost/path-to-folder/index.php/cars/list?limit=10&offset=1` to get a rudimentary for of pagination.
+
 `localhost/path-to-folder/index.php/cars/filter?model=E30&orderby=model&order=descending` to filter by car model.
 
 The above were basic **GET** requests which are entirely via URL, but if you wanted to insert data for instance, then you'd need to use a **POST** request with a body. Here is an example:
