@@ -1,5 +1,7 @@
 <?php
 
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/dbFunctions.php');
+
 class controllerFunctions
 {
     protected $dbEngine = null;
@@ -11,13 +13,7 @@ class controllerFunctions
 
     public function __call($name, $arguments)
     {
-        // TODO: Implement __call() method.
         $this->sendData('', array('HTTP/1.1 404 Not Found'));
-    }
-
-    protected function parseURI()
-    {
-        return explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     }
 
 /*    protected function PUT($key)
@@ -34,7 +30,7 @@ class controllerFunctions
         return -1;
     }*/
 
-    protected function getFormattedPUT()
+    protected function getFormattedPUT(): array
     {
         $inputFileSrc = 'php://input';
         $lines = file($inputFileSrc);

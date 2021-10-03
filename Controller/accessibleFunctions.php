@@ -25,7 +25,7 @@ class accessibleFunctions extends controllerFunctions
                 }
                 $responseData = json_encode($data);
             } catch (Error $err) {
-                $strErrorDesc = $err->getMessage() . 'Oops, are you sure you\'re making a proper request?';
+                $strErrorDesc = $err->getMessage() . '. Oops, are you sure you\'re making a proper request?';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {
@@ -103,7 +103,7 @@ class accessibleFunctions extends controllerFunctions
                 }
             } catch
             (Error $err) {
-                $strErrorDesc = $err->getMessage() . 'I don\'t know what you did, but it was deadly.';
+                $strErrorDesc = $err->getMessage() . '. I don\'t know what you did, but it was deadly.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {
@@ -142,7 +142,7 @@ class accessibleFunctions extends controllerFunctions
                 }
             } catch
             (Error $err) {
-                $strErrorDesc = $err->getMessage() . 'I don\'t know what you did, but it was deadly.';
+                $strErrorDesc = $err->getMessage() . '. I don\'t know what you did, but it was deadly.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {
@@ -190,7 +190,7 @@ class accessibleFunctions extends controllerFunctions
                 }
             } catch
             (Error $err) {
-                $strErrorDesc = $err->getMessage() . 'I don\'t know what you did, but it was deadly.';
+                $strErrorDesc = $err->getMessage() . '. I don\'t know what you did, but it was deadly.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {

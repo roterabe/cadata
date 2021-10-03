@@ -8,7 +8,13 @@ class Database extends SQLite3 implements dbFunctions
 
     function __construct($myDB)
     {
-        $this->connect($myDB);
+        try {
+            $this->connect($myDB);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+        }
     }
 
     function connect($dir)

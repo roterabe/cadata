@@ -21,6 +21,8 @@ class acceptRequest
 $uri = new acceptRequest($_SERVER['REQUEST_URI']);
 $db = new Database(dirname(__FILE__) . '/Schema/cars.sql');
 
+//Using a $uri object, you parse the user's request and call the needed object and function to make changes to your database.
+
 if ($uri->getUri(3) !== null && $uri->getUri(3) !== 'cars' || $uri->getUri(4) === null) {
     header('HTTP/1.1 404 Not Found');
     exit();
