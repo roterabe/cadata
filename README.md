@@ -22,15 +22,15 @@ The way you make API calls is via **GET**, **POST** and **PUT** requests. Or in 
 
 The above were basic **GET** requests which are entirely via URL, but if you wanted to insert data for instance, then you'd need to use a **POST** request with a body. Here is an example:
 
-![Creating data](https://github.com/roterabe/cadata/blob/main/insert-data.png)
+![Creating data](https://github.com/roterabe/cadata/blob/main/ext/insert-data.png)
 
 And this is an example for updating data by specifying an ID:
 
-![Updating data](https://github.com/roterabe/cadata/blob/main/update-data.png)
+![Updating data](https://github.com/roterabe/cadata/blob/main/ext/update-data.png)
 
 And this is an example of doing a soft delete, meaning that the data remains, but is now invisible unless really needed:
 
-![Deleting data](https://github.com/roterabe/cadata/blob/main/delete-data.png)
+![Deleting data](https://github.com/roterabe/cadata/blob/main/ext/delete-data.png)
 
 
 
