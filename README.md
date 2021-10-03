@@ -13,6 +13,7 @@ From there onwards, you may proceed with using the API. Since this is a simple C
 The way you make API calls is via **GET**, **POST** and **PUT** requests. Or in other words, you can type in specific URLs such as: 
 
 `localhost/path-to-folder/index.php/cars/list` to list all car data available in the database.
+
 `localhost/path-to-folder/index.php/cars/list?limit=10&offset=1` to get a rudimentary for of pagination.
 `localhost/path-to-folder/index.php/cars/filter?model=E30&orderby=model&order=descending` to filter by car model.
 
