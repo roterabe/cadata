@@ -12,12 +12,13 @@ class accessibleFunctions extends controllerFunctions
         $strErrorHeader = '';
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         $responseData = '';
+        $keys = $this->getQueryKey();
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
-                $db = new dbChoice($this->dbEngine, $_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
+                $db = new dbChoice($this->dbEngine);
 
-                $SQLiteObj = $db->listAll();
+                $SQLiteObj = $db->listAll($keys);
                 $data = array();
                 while ($row = $SQLiteObj->fetchArray(SQLITE3_ASSOC)) {
                     $data[] = $row;
@@ -25,6 +26,45 @@ class accessibleFunctions extends controllerFunctions
                 $responseData = json_encode($data);
             } catch (Error $err) {
                 $strErrorDesc = $err->getMessage() . 'Oops, are you sure you\'re making a proper request?';
+                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+        } else {
+            $strErrorDesc = 'Method not supported';
+            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+        }
+
+        if (!$strErrorDesc) {
+            $this->sendData(
+                $responseData,
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        } else {
+            $this->sendData(json_encode(array('error' => $strErrorDesc)),
+                array('Content-Type: application/json', $strErrorHeader)
+            );
+        }
+    }
+
+    public function filterData()
+    {
+        $strErrorDesc = '';
+        $strErrorHeader = '';
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
+        $responseData = '';
+        $keys = $this->getQueryKey();
+
+        if (strtoupper($requestMethod) == 'GET') {
+            try {
+                $db = new dbChoice($this->dbEngine);
+
+                $SQLiteObj = $db->filter($keys);
+                $data = array();
+                while ($row = $SQLiteObj->fetchArray(SQLITE3_ASSOC)) {
+                    $data[] = $row;
+                }
+                $responseData = json_encode($data);
+            } catch (Error $err) {
+                $strErrorDesc = $err->getMessage() . '. Oops, are you sure you\'re making a proper request?';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {
@@ -53,7 +93,7 @@ class accessibleFunctions extends controllerFunctions
 
         if (strtoupper($requestMethod) == 'POST') {
             try {
-                $db = new dbChoice($this->dbEngine, $_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
+                $db = new dbChoice($this->dbEngine);
                 if (count($_POST) !== 8) {
                     throw new Exception('POST expected 8 fields of data');
                 }
@@ -94,7 +134,7 @@ class accessibleFunctions extends controllerFunctions
         if (strtoupper($requestMethod) == 'PUT') {
             try {
                 $_PUT = $this->getFormattedPUT();
-                $db = new dbChoice($this->dbEngine, $_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
+                $db = new dbChoice($this->dbEngine);
 
                 if (isset($_PUT)) {
                     echo 'welp';
@@ -134,7 +174,7 @@ class accessibleFunctions extends controllerFunctions
             try {
                 $counter = 0;
                 $lines = file('php://input');
-                $db = new dbChoice($this->dbEngine, $_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
+                $db = new dbChoice($this->dbEngine);
                 foreach ($lines as $i => $line) {
                     $search = 'Content-Disposition: form-data;';
                     if (strpos($line, $search) !== false) {

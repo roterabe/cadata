@@ -1,7 +1,6 @@
 <?php
 
 require_once(dirname(__FILE__) . '/Controller/accessibleFunctions.php');
-require_once(dirname(__FILE__) . '/Schema/Modifiers.php');
 
 class acceptRequest
 {
@@ -19,27 +18,30 @@ class acceptRequest
 
 }
 
-;
-
 $uri = new acceptRequest($_SERVER['REQUEST_URI']);
+$db = new Database(dirname(__FILE__) . '/Schema/cars.sql');
 
 if ($uri->getUri(3) !== null && $uri->getUri(3) !== 'cars' || $uri->getUri(4) === null) {
     header('HTTP/1.1 404 Not Found');
     exit();
 } else if ($uri->getUri(3) !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'create') {
-    $action = new accessibleFunctions('SQLite');
+    $action = new accessibleFunctions($db);
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
 } else if ($uri->getUri(3 !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'update')) {
-    $action = new accessibleFunctions('SQLite');
+    $action = new accessibleFunctions($db);
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
 } else if ($uri->getUri(3) !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'delete') {
-    $action = new accessibleFunctions('SQLite');
+    $action = new accessibleFunctions($db);
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
 } else if ($uri->getUri(3) !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'list') {
-    $action = new accessibleFunctions('SQLite');
+    $action = new accessibleFunctions($db);
+    $queryType = $uri->getUri(4) . 'Data';
+    $action->{$queryType}();
+} else if ($uri->getUri(3) !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'filter') {
+    $action = new accessibleFunctions($db);
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
 }

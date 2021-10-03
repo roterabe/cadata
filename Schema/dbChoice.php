@@ -4,33 +4,35 @@ require_once dirname(__FILE__) . '/Modifiers.php';
 
 class dbChoice
 {
-    private $obj = '';
+    private $db = null;
 
-    function __construct($dbType, $dbPath)
+    function __construct(dbFunctions $db)
     {
-        if ($dbType === 'SQLite')
-        {
-            $this->obj = new Modifiers($dbPath);
-        }
+        $this->db = new Modifiers($db);
     }
 
-    public function listAll()
+    public function listAll($keys)
     {
-        return $this->obj->listAll();
+        return $this->db->listAll($keys);
+    }
+
+    public function filter($keys)
+    {
+        return $this->db->filter($keys);
     }
 
     public function createEntry($cName, $cModel, $cYear, $cEngine, $cFuel, $isHybrid, $isAWD, $isAutomatic)
     {
-        $this->obj->createEntry($cName, $cModel, $cYear, $cEngine, $cFuel, $isHybrid, $isAWD, $isAutomatic);
+        $this->db->createEntry($cName, $cModel, $cYear, $cEngine, $cFuel, $isHybrid, $isAWD, $isAutomatic);
     }
 
     public function updateEntry($keys, $_PUT)
     {
-        $this->obj->updateEntry($keys, $_PUT);
+        $this->db->updateEntry($keys, $_PUT);
     }
 
     public function deleteEntry($cModel, $cYear, $cEngine, $isHybrid, $isAWD, $isAutomatic)
     {
-        $this->obj->deleteEntry($cModel, $cYear, $cEngine, $isHybrid, $isAWD, $isAutomatic);
+        $this->db->deleteEntry($cModel, $cYear, $cEngine, $isHybrid, $isAWD, $isAutomatic);
     }
 }

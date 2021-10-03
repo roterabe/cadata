@@ -2,9 +2,9 @@
 
 class controllerFunctions
 {
-    protected $dbEngine = '';
+    protected $dbEngine = null;
 
-    function __construct($dbEngine)
+    function __construct(dbFunctions $dbEngine)
     {
         $this->dbEngine = $dbEngine;
     }
