@@ -81,11 +81,99 @@ EOF;
 
     }
 
-    public function updateEntry()
+    public function updateEntry($keys, $_PUT)
     {
-        $sql = <<<EOF
-
+        $id = $keys['cID'];
+        print_r($_PUT);
+        for ($i = 0; i < count($_PUT); $i++) {
+            switch (array_keys($_PUT)[$i]) {
+                case 'cModel':
+                    $sql = <<<EOF
+                INSERT INTO manufacturer (man_name) VALUES (:man_name) ON CONFLICT (man_name) DO UPDATE SET man_name = (:man_name);
 EOF;
+                    $statement = $this->prepare($sql);
+                    $statement->bindParam(':man_name', $_PUT['cName'], SQLITE3_TEXT);
+                    $res = $statement->execute();
+                    $res->finalize();
+                    $sql = <<<EOF
+                INSERT INTO model (m_name, man_id) VALUES (:m_name, (SELECT man_id FROM manufacturer WHERE man_name=:man_name)) ON CONFLICT (m_name) DO UPDATE SET m_name = (:m_name);
+EOF;
+                    $statement = $this->prepare($sql);
+                    $statement->bindParam(':m_name', $_PUT['cModel'], SQLITE3_TEXT);
+                    $statement->bindParam(':man_name', $_PUT['cName'], SQLITE3_TEXT);
+                    $res = $statement->execute();
+                    $res->finalize();
+                    //TODO first push data from back and then move over to 'car' table to update. This is done so as to be sure that you have something to update with.
+                    $sql = <<<EOF
+                UPDATE car SET m_id = (SELECT m_id FROM model WHERE m_name = :m_name) WHERE c_id = :c_id;
+EOF;
+                    $statement = $this->prepare($sql);
+                    $statement->bindParam(':m_name', $_PUT['cModel'], SQLITE3_TEXT);
+                    $statement->bindParam(':c_id', $id, SQLITE3_INTEGER);
+                    $res = $statement->execute();
+                    $res->finalize();
+                    break;
+
+                case 'cYear':
+                    $sql = <<<EOF
+                INSERT INTO model_year (year) VALUES (:cYear) ON CONFLICT (year) DO UPDATE SET year = (:cYear);
+EOF;
+                    $statement = $this->prepare($sql);
+                    $statement->bindParam(':cYear', $_PUT['cYear'], SQLITE3_INTEGER);
+                    $res = $statement->execute();
+                    $res->finalize();
+                    $sql = <<<EOF
+                UPDATE car SET y_id = (SELECT y_id FROM model_year WHERE year = :cYear) WHERE c_id = :c_id;
+EOF;
+                    $statement = $this->prepare($sql);
+                    $statement->bindParam(':cYear', $_PUT['cYear'], SQLITE3_INTEGER);
+                    $statement->bindParam(':c_id', $id, SQLITE3_INTEGER);
+                    $res = $statement->execute();
+                    $res->finalize();
+                    break;
+
+                case 'cEngine':
+                    $sql = <<<EOF
+                    INSERT INTO engine (engine_name, fuel) VALUES (:engine_name, :fuel) ON CONFLICT (engine_name, fuel) DO UPDATE SET engine_name = (:engine_name), fuel = (:fuel);
+EOF;
+                    $statement = $this->prepare($sql);
+                    $statement->bindParam(':engine_name', $_PUT['cEngine'], SQLITE3_TEXT);
+                    $statement->bindParam(':fuel', $_PUT['cFuel'], SQLITE3_TEXT);
+                    $res = $statement->execute();
+                    $res->finalize();
+                    $sql = <<<EOF
+                    INSERT INTO extras (engine_name, hybrid, awd, automatic) VALUES (:engine_name, :isHybrid, :isAWD, :isAutomatic) ON CONFLICT (engine_name, hybrid, awd, automatic) DO UPDATE SET engine_name = (:engine_name), hybrid = (:isHybrid), awd = (:isAWD), automatic = (:isAutomatic);
+EOF;
+                    $statement = $this->prepare($sql);
+                    $statement->bindParam(':engine_name', $cEngine, SQLITE3_TEXT);
+                    $statement->bindParam(':isHybrid', $isHybrid, SQLITE3_INTEGER);
+                    $statement->bindParam(':isAWD', $isAWD, SQLITE3_INTEGER);
+                    $statement->bindParam(':isAutomatic', $isAutomatic, SQLITE3_INTEGER);
+                    $res = $statement->execute();
+                    $res->finalize();
+                    $sql = <<<EOF
+                    UPDATE car SET e_id = (SELECT e_id FROM extras WHERE engine_name = :engine_name AND hybrid = :isHybrid AND awd = :isAWD AND automatic = :isAutomatic) WHERE c_id = :c_id;
+EOF;
+                    $statement = $this->prepare($sql);
+                    $statement->bindParam(':engine_name', $cEngine, SQLITE3_TEXT);
+                    $statement->bindParam(':isHybrid', $isHybrid, SQLITE3_INTEGER);
+                    $statement->bindParam(':isAWD', $isAWD, SQLITE3_INTEGER);
+                    $statement->bindParam(':isAutomatic', $isAutomatic, SQLITE3_INTEGER);
+                    $statement->bindParam(':c_id', $id, SQLITE3_INTEGER);
+                    $res = $statement->execute();
+                    $res->finalize();
+
+                    break;
+            }
+        }
+
+        /*$sql = <<<EOF
+    UPDATE extras SET engine_name = :engine_name
+EOF;
+        $statement = $this->prepare($sql);
+        $statement->bindParam(':engine_name', $cEngine);
+        $res = $statement->execute();
+        $res->finalize();*/
 
     }
 

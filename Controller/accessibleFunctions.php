@@ -1,23 +1,10 @@
 <?php
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/dbChoice.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/dbChoice.php');
 require_once(dirname(__FILE__) . '/controllerFunctions.php');
 
 class accessibleFunctions extends controllerFunctions
 {
-    private function PUT($key)
-    {
-        $inputFileSrc = 'php://input';
-        $lines = file($inputFileSrc);
-
-        foreach ($lines as $i => $line) {
-            $search = 'Content-Disposition: form-data; name="' . $key . '"';
-            if (strpos($line, $search) !== false) {
-                return trim($lines[$i + 2]);
-            }
-        }
-        return -1;
-    }
 
     public function listData()
     {
@@ -45,7 +32,6 @@ class accessibleFunctions extends controllerFunctions
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
 
-        // send output
         if (!$strErrorDesc) {
             $this->sendData(
                 $responseData,
@@ -85,11 +71,14 @@ class accessibleFunctions extends controllerFunctions
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
 
-// send output
         if (!$strErrorDesc) {
             $this->sendData(
                 $responseData,
                 array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        } else {
+            $this->sendData(json_encode(array('error' => $strErrorDesc)),
+                array('Content-Type: application/json', $strErrorHeader)
             );
         }
     }
@@ -100,18 +89,16 @@ class accessibleFunctions extends controllerFunctions
         $strErrorHeader = '';
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         $responseData = '';
+        $keys = $this->getQueryKey();
 
         if (strtoupper($requestMethod) == 'PUT') {
             try {
-                parse_str(file_get_contents("php://input"), $post_vars);
+                $_PUT = $this->getFormattedPUT();
                 $db = new dbChoice($this->dbEngine, $_SERVER['DOCUMENT_ROOT'] . '/cadata/Schema/cars.sql');
-                if (count($post_vars) !== 8) {
-                    throw new Exception('POST expected 8 fields of data');
-                }
-                if (isset($_POST)) {
-                    $db->updateEntry();
-                    //$modifiers->createEntry($_POST['cName'], $_POST['cModel'], $_POST['cYear'], $_POST['cEngine'], $_POST['cFuel'], $_POST['isHybrid'], $_POST['isAWD'], $_POST['isAutomatic']);
-                    //print_r($_POST);
+
+                if (isset($_PUT)) {
+                    echo 'welp';
+                    $db->updateEntry($keys, $_PUT);
                 }
             } catch
             (Error $err) {
@@ -123,16 +110,20 @@ class accessibleFunctions extends controllerFunctions
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
 
-// send output
         if (!$strErrorDesc) {
             $this->sendData(
                 $responseData,
                 array('Content-Type: application/json', 'HTTP/1.1 200 OK')
             );
+        } else {
+            $this->sendData(json_encode(array('error' => $strErrorDesc)),
+                array('Content-Type: application/json', $strErrorHeader)
+            );
         }
     }
 
-    public function deleteData()
+    public
+    function deleteData()
     {
         $strErrorDesc = '';
         $strErrorHeader = '';
@@ -167,11 +158,14 @@ class accessibleFunctions extends controllerFunctions
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
 
-// send output
         if (!$strErrorDesc) {
             $this->sendData(
                 $responseData,
                 array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        } else {
+            $this->sendData(json_encode(array('error' => $strErrorDesc)),
+                array('Content-Type: application/json', $strErrorHeader)
             );
         }
     }

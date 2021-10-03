@@ -38,7 +38,7 @@ if ($uri->getUri(3) !== null && $uri->getUri(3) !== 'cars' || $uri->getUri(4) ==
     $action = new accessibleFunctions('SQLite');
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
-} else {
+} else if ($uri->getUri(3) !== null && $uri->getUri(3) === 'cars' && $uri->getUri(4) === 'list') {
     $action = new accessibleFunctions('SQLite');
     $queryType = $uri->getUri(4) . 'Data';
     $action->{$queryType}();
