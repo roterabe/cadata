@@ -7,7 +7,8 @@ In order to setup this API locally, you'd need to first run a server like **Apac
 Once you've set up a local server on **127.0.0.1 or localhost**, then you may proceed by moving the whole project folder in your server's folder.
 
 
-Next up, you'll need a browser and a database to work with. To generate a sample database, simply load up `localhost/path-to-folder/Schema/Create.php`. You should get a message that all needed tables have been created successfully.
+Next up, you'll need a browser and a database to work with. 
+To generate a sample database, simply load up `localhost/path-to-folder/Schema/Create.php`. You should get a message that all needed tables have been created successfully.
 
 From there onwards, you may proceed with using the API. Since this is a simple CRUD-based API, you have the standard Create, Update, Delete and etc. functions.
 The way you make API calls is via **GET**, **POST** and **PUT** requests. Or in other words, you can type in specific URLs such as: 
