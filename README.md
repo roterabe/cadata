@@ -3,7 +3,7 @@ This is a simple CRUD API for getting data on popular car models.
 
 ## Instructions
 
-In order to set up this API locally, you'd need to first run a server like [Apache](https://www.apache.org/) or anything simple enough in general.
+In order to set up this API locally, you'd need to first run a server like [Apache](https://www.apache.org/) or anything simple enough in general. I also recommend using an application such as [Postman](https://www.postman.com/) for sendind **POST** and **PUT** requests.
 Once you've set up a local server on **127.0.0.1 or localhost**, then you may proceed by moving the whole project folder in your server's folder.
 
 
