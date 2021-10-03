@@ -1,2 +1,2 @@
 # Cadata
-This is a simple REST API for getting data on popular car models.
+This is a simple CRUD API for getting data on popular car models.
